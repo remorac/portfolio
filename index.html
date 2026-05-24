@@ -399,7 +399,7 @@
   <section class="hero" id="top">
     <div class="container">
       <div class="hero-content">
-        <span class="hero-label">Full Stack Developer & System Analyst</span>
+        <span class="hero-label">Software Builder</span>
         <h1>Building Web & Mobile Apps That Solve Real Problems</h1>
         <p>Co-Founder & CTO at Appskep. 14+ years building information systems for healthcare, education, government,
           and industry across Indonesia.</p>
@@ -748,12 +748,22 @@
         modal.classList.add('open');
         document.body.classList.add('modal-open');
         if (window.lucide) lucide.createIcons();
+
+        history.pushState({ modal: true }, '');
       }
 
-      function closeModal() {
+      function closeModal({ fromPopState = false } = {}) {
+        if (!modal.classList.contains('open')) return;
         modal.classList.remove('open');
         document.body.classList.remove('modal-open');
+        if (!fromPopState && history.state && history.state.modal) {
+          history.back();
+        }
       }
+
+      window.addEventListener('popstate', () => {
+        if (modal.classList.contains('open')) closeModal({ fromPopState: true });
+      });
 
       function bindProjectLinks() {
         document.querySelectorAll('.project-link[data-project-id]').forEach(link => {
