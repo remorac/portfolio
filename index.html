@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habiburrahman — Full Stack Developer & System Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <style>
+    /* Lucide icon sizing inside existing containers */
+    .logo-icon {
+      width: auto;
+      height: auto;
+      background: transparent;
+    }
+
+    .logo-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--accent-dark);
+      stroke-width: 1.75;
+    }
+
+    .service-icon svg {
+      width: 28px;
+      height: 28px;
+      color: white;
+      stroke-width: 2;
+    }
+
+    .project-image-icon svg {
+      width: 64px;
+      height: 64px;
+      color: white;
+      stroke-width: 1.5;
+      opacity: 0.9;
+    }
+
+    .modal-icon svg {
+      width: 48px;
+      height: 48px;
+      color: var(--accent-dark);
+      stroke-width: 1.75;
+    }
+
+    .modal-close svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .social-links svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Reset any leftover emoji-era font-size since SVGs handle their own size */
+    .service-icon,
+    .project-image-icon,
+    .modal-icon,
+    .logo-icon,
+    .card-icon {
+      line-height: 0;
+    }
+
+    /* Project card category tag — pinned top-right */
+    .project-card {
+      position: relative;
+    }
+
+    .project-card .project-tags {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      margin: 0;
+      z-index: 2;
+    }
+
+    /* Project card meta (year / location) */
+    .project-card-meta {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 14px;
+      font-size: 0.85rem;
+      color: var(--text-light, #64748b);
+    }
+
+    .project-card-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    .project-card-meta-item:last-of-type {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .project-card-meta .project-link {
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .project-card-meta-item svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2;
+      color: var(--accent-dark);
+    }
+
+    /* Inline project-card icon — matches modal-icon style */
+    .card-icon {
+      display: inline-flex;
+      margin-bottom: 16px;
+    }
+
+    .card-icon svg {
+      width: 48px;
+      height: 48px;
+      color: var(--accent-dark);
+      stroke-width: 1.75;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: 0;
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: var(--text-light, #64748b);
+    }
+
+    .modal-close:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .modal-icon {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+    }
+
+    .modal-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      padding: 1rem 0;
+      border-top: 1px solid #eef2f6;
+      border-bottom: 1px solid #eef2f6;
+      margin: 1.25rem 0;
+    }
+
+    .modal-meta h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-light, #64748b);
+      margin: 0 0 0.25rem;
+    }
+
+    .modal-meta p {
+      margin: 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .modal h3 {
+      font-size: 1rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .modal-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .modal-tech .tech-item {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .modal-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* Experience timeline */
+    .experience-list {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-left: 64px;
+    }
+
+    .experience-list::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+      border-radius: 2px;
+    }
+
+    .experience-item {
+      position: relative;
+      background: white;
+      padding: 24px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .experience-item:hover {
+      transform: translateX(2px);
+      box-shadow: 0 8px 24px -12px rgba(30, 58, 95, 0.18);
+    }
+
+    .experience-marker {
+      position: absolute;
+      left: -64px;
+      top: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 0 0 4px white, 0 0 0 6px var(--border);
+    }
+
+    .experience-marker svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .experience-item::after {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 28px;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-left: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transform: rotate(45deg);
+    }
+
+    .experience-period {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      background: rgba(0, 168, 138, 0.1);
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .experience-item h4 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .experience-role {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 4px 0 0;
+    }
+
+    .experience-desc {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin: 12px 0 0;
+    }
+
+    @media (max-width: 600px) {
+      .experience-list {
+        padding-left: 48px;
+        gap: 24px;
+      }
+
+      .experience-list::before {
+        left: 15px;
+      }
+
+      .experience-marker {
+        left: -48px;
+        width: 32px;
+        height: 32px;
+      }
+
+      .experience-marker svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      .experience-item {
+        padding: 20px;
+      }
+
+      .experience-item::after {
+        top: 22px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#top" class="logo">
+        <span class="logo-icon"><i data-lucide="user"></i></span>
+        Habiburrahman
+      </a>
+      <ul class="nav-links">
+        <li><a href="#top">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-label">Full Stack Developer & System Analyst</span>
+        <h1>Building Web & Mobile Apps That Solve Real Problems</h1>
+        <p>Co-Founder & CTO at Appskep. 14+ years building information systems for healthcare, education, government,
+          and industry across Indonesia.</p>
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="#contact" class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.3);">Get in
+            Touch</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>50+</h3>
+            <p>Projects Delivered</p>
+          </div>
+          <div class="stat-item">
+            <h3>25+</h3>
+            <p>Clients Served</p>
+          </div>
+          <div class="stat-item">
+            <h3>14+</h3>
+            <p>Years Experience</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">What I Do</span>
+        <h2 class="section-title">Services</h2>
+        <p class="section-desc">End-to-end software delivery — from requirements through deployment and operation.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="monitor"></i></div>
+          <h3>Web Applications</h3>
+          <p>Custom web information systems built with Golang, React.js, and PHP (Yii2). From inventory and ERP-style
+            systems to public-facing platforms.</p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="smartphone"></i></div>
+          <h3>Mobile Apps</h3>
+          <p>Android apps with Kotlin and cross-platform mobile apps with React Native — including webview-based hybrid
+            apps when speed-to-market matters.</p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="database"></i></div>
+          <h3>Database Design</h3>
+          <p>Relational database design and tuning — primarily MySQL. Strong focus on data integrity, reporting needs,
+            and operational performance.</p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="cloud"></i></div>
+          <h3>DevOps</h3>
+          <p>Deployment, server administration, CI/CD, and ongoing operation of production systems serving real users in
+            real businesses.</p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="chart-column"></i></div>
+          <h3>System Analysis</h3>
+          <p>Requirements gathering, process mapping, and turning operational realities into software designs — for
+            healthcare, education, government, and industry.</p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="handshake"></i></div>
+          <h3>Long-Term Partnership</h3>
+          <p>Many of my projects have been maintained for years. I build software that lasts — and I stay around to keep
+            it working.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section bg-alt" id="projects">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Portfolio</span>
+        <h2 class="section-title">Projects</h2>
+        <p class="section-desc">Projects I've delivered across healthcare, education, government, industry, and
+          small business — from 2012 to today.</p>
+      </div>
+      <div class="filters fade-in">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="healthcare">Healthcare</button>
+        <button class="filter-btn" data-filter="education">Education</button>
+        <button class="filter-btn" data-filter="government">Government</button>
+        <button class="filter-btn" data-filter="inventory">Inventory</button>
+        <button class="filter-btn" data-filter="corporate">Corporate</button>
+        <button class="filter-btn" data-filter="mobile">Mobile</button>
+        <button class="filter-btn" data-filter="others">Others</button>
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        <!-- Projects injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Experience</span>
+        <h2 class="section-title">Where I've Worked</h2>
+        <p class="section-desc">Companies and roles across more than a decade of building software in Indonesia.</p>
+      </div>
+      <div class="experience-list">
+        <div class="experience-item fade-in">
+          <div class="experience-marker"><i data-lucide="briefcase"></i></div>
+          <span class="experience-period">2017 – Now</span>
+          <h4>Appskep Indonesia</h4>
+          <p class="experience-role">Co-Founder &amp; Chief Technology Officer</p>
+          <p class="experience-desc">Building and operating SaaS platforms for healthcare and civil-servant exam
+            preparation — UKOM, Asnesia (CPNS), and Homecare — used by thousands of users across Indonesia.</p>
+        </div>
+        <div class="experience-item fade-in">
+          <div class="experience-marker"><i data-lucide="briefcase"></i></div>
+          <span class="experience-period">2019 – Now</span>
+          <h4>DWP Software</h4>
+          <p class="experience-role">Co-Founder &amp; System Analyst</p>
+          <p class="experience-desc">Delivering bespoke information systems for government, education, pharma, and
+            industry clients — including Dewan Pers, LAMEMBA, Notarius.id, PT Panay Farmalab, and PT Nusantara Beta
+            Farma.</p>
+        </div>
+        <div class="experience-item fade-in">
+          <div class="experience-marker"><i data-lucide="briefcase"></i></div>
+          <span class="experience-period">2018 – 2019</span>
+          <h4>CimangkoLabs</h4>
+          <p class="experience-role">Part Time Programmer</p>
+          <p class="experience-desc">Built inventory and operational systems for institutional clients including BNN
+            West Sumatra and PT Tre Jaya Perkasa.</p>
+        </div>
+        <div class="experience-item fade-in">
+          <div class="experience-marker"><i data-lucide="briefcase"></i></div>
+          <span class="experience-period">2015 – 2018</span>
+          <h4>PT Semen Padang</h4>
+          <p class="experience-role">Full Stack Programmer — Proyek Indarung VI</p>
+          <p class="experience-desc">Built the procurement information system for the Indarung VI construction project
+            — one of the largest cement plant projects in West Sumatra.</p>
+        </div>
+        <div class="experience-item fade-in">
+          <div class="experience-marker"><i data-lucide="briefcase"></i></div>
+          <span class="experience-period">2012 – Now</span>
+          <h4>Freelance</h4>
+          <p class="experience-role">Full Stack Programmer</p>
+          <p class="experience-desc">More than a decade of freelance work — inventory systems, membership systems,
+            election real-count, public-health surveys, and more. From VB.NET desktop apps to modern web stacks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="section bg-alt" id="education">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Education</span>
+        <h2 class="section-title">Academic Background</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="graduation-cap"></i></div>
+          <h3>Magister Teknik Informatika</h3>
+          <p>
+            <span style="color: var(--text-light, #64748b); margin-top: 0.25rem;">2020 – 2023</span> &bullet;
+            <span>UPI YPTK, Padang</span>
+          </p>
+        </div>
+        <div class="service-card fade-in">
+          <div class="service-icon"><i data-lucide="book-open"></i></div>
+          <h3>Sarjana Sistem Informasi</h3>
+          <p>
+            <span style="color: var(--text-light, #64748b);">2011 – 2015</span> &bullet;
+            <span>STMIK Indonesia, Padang</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / Contact -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <h2>Have a Project in Mind?</h2>
+      <p>Based in Padang, working with clients across Indonesia. Let's talk about your information system, web app, or
+        mobile app.</p>
+      <a href="mailto:habiburrahman89rr@gmail.com" class="btn btn-white">habiburrahman89rr@gmail.com</a>
+      <p style="margin-top: 1.25rem; opacity: 0.85;"><a href="tel:+6282174878678" style="color: inherit;">+62
+          821-7487-8678</a></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#top" class="logo">
+            <span class="logo-icon"><i data-lucide="user"></i></span>
+            Habiburrahman
+          </a>
+          <p>Full Stack Developer & System Analyst based in Padang, Indonesia. Building information systems and apps for
+            healthcare, education, government, and industry since 2012.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Live Sites</h4>
+          <ul>
+            <li><a href="https://ukom.appskep.id" target="_blank" rel="noopener">UKOM Appskep</a></li>
+            <li><a href="https://asnesia.id" target="_blank" rel="noopener">Asnesia CPNS</a></li>
+            <li><a href="https://homecare.appskep.id" target="_blank" rel="noopener">Homecare</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Habiburrahman. All rights reserved.</p>
+        <div class="social-links">
+          <a href="mailto:habiburrahman89rr@gmail.com" aria-label="Email"><i data-lucide="mail"></i></a>
+          <a href="tel:+6282174878678" aria-label="Phone"><i data-lucide="phone"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project Detail Modal -->
+  <div class="modal-backdrop" id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+      <div class="modal-icon" id="modal-icon"></div>
+      <div class="project-tags"><span class="tag" id="modal-tag"></span></div>
+      <h2 id="modal-title"></h2>
+      <p id="modal-desc" style="color: var(--text-light, #64748b); line-height: 1.7;"></p>
+      <div class="modal-meta">
+        <div>
+          <h4>Client</h4>
+          <p id="modal-client"></p>
+        </div>
+        <div>
+          <h4>Location</h4>
+          <p id="modal-location"></p>
+        </div>
+        <div>
+          <h4>Year</h4>
+          <p id="modal-date"></p>
+        </div>
+        <div>
+          <h4>Role</h4>
+          <p id="modal-role"></p>
+        </div>
+      </div>
+      <h3>Technologies</h3>
+      <div class="modal-tech" id="modal-tech"></div>
+      <div class="modal-actions">
+        <a id="modal-link" target="_blank" rel="noopener" class="btn btn-primary" style="display: none;">Visit Live Site
+          →</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/projects-data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const grid = document.getElementById('projects-grid');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+
+      function renderProjects(filter) {
+        const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+        grid.innerHTML = '';
+        filtered.forEach((project, index) => {
+          const card = document.createElement('div');
+          card.className = 'project-card fade-in visible';
+          card.style.animationDelay = `${index * 30}ms`;
+          card.innerHTML = `
+            <div class="project-content">
+              <div class="card-icon"><i data-lucide="${project.image}"></i></div>
+              <div class="project-tags">
+                <span class="tag">${project.categoryLabel}</span>
+              </div>
+              <h3>${project.title}</h3>
+              <p>${project.shortDesc}</p>
+              <div class="project-card-meta">
+                <span class="project-card-meta-item"><i data-lucide="calendar"></i>${project.date || '—'}</span>
+                <span class="project-card-meta-item"><i data-lucide="map-pin"></i>${project.location || '—'}</span>
+                <a href="#" class="project-link" data-project-id="${project.id}">
+                  Detail →
+                </a>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+        bindProjectLinks();
+        if (window.lucide) lucide.createIcons();
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderProjects(btn.dataset.filter);
+        });
+      });
+
+      // Modal logic
+      const modal = document.getElementById('project-modal');
+      const modalClose = document.getElementById('modal-close');
+
+      function openModal(projectId) {
+        const project = getProjectById(projectId);
+        if (!project) return;
+
+        document.getElementById('modal-icon').innerHTML = `<i data-lucide="${project.image}"></i>`;
+        document.getElementById('modal-tag').textContent = project.categoryLabel;
+        document.getElementById('modal-title').textContent = project.title;
+        document.getElementById('modal-desc').textContent = project.description || project.shortDesc;
+        document.getElementById('modal-client').textContent = project.client || '—';
+        document.getElementById('modal-location').textContent = project.location || '—';
+        document.getElementById('modal-date').textContent = project.date || '—';
+        document.getElementById('modal-role').textContent = project.role || '—';
+
+        const techEl = document.getElementById('modal-tech');
+        techEl.innerHTML = project.tech.map(t => `<span class="tech-item">${t}</span>`).join('');
+
+        const linkEl = document.getElementById('modal-link');
+        if (project.link) {
+          linkEl.href = project.link;
+          linkEl.style.display = 'inline-flex';
+        } else {
+          linkEl.style.display = 'none';
+        }
+
+        modal.classList.add('open');
+        document.body.classList.add('modal-open');
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        document.body.classList.remove('modal-open');
+      }
+
+      function bindProjectLinks() {
+        document.querySelectorAll('.project-link[data-project-id]').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(link.dataset.projectId);
+          });
+        });
+      }
+
+      modalClose.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+      renderProjects('all');
+    });
+  </script>
+</body>
+
+</html>
