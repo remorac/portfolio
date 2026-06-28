@@ -546,7 +546,7 @@ button, input, textarea, select {
   opacity: 0;
   overflow: hidden;
   white-space: nowrap;
-  transition: max-width 0.25s ease, opacity 0.2s ease, margin-left 0.25s ease;
+  transition: max-width 0.5s ease, opacity 0.4s ease, margin-left 0.5s ease;
 }
 
 /* The expanded tag shows its label. The primary starts expanded; hovering a
