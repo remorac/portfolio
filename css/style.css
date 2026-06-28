@@ -523,12 +523,42 @@ button, input, textarea, select {
 }
 
 .tag {
+  display: inline-flex;
+  align-items: center;
   font-size: 0.75rem;
   font-weight: 600;
   padding: 4px 12px;
   border-radius: 100px;
   background: var(--bg-alt);
   color: var(--text-light);
+}
+
+.tag i,
+.tag svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+/* Tag label collapses to icon-only by default; expands smoothly when shown. */
+.tag .tag-label {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.25s ease, opacity 0.2s ease, margin-left 0.25s ease;
+}
+
+/* The expanded tag shows its label. The primary starts expanded; hovering a
+   sibling moves the `.expanded` class to it (handled in JS) so it stays open. */
+.tag.expanded .tag-label {
+  max-width: 160px;
+  opacity: 1;
+  margin-left: 6px;
+}
+
+.tag:not(.expanded) {
+  cursor: pointer;
 }
 
 .project-card h3 {
@@ -776,6 +806,9 @@ button, input, textarea, select {
 }
 
 .filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 10px 24px;
   border-radius: 100px;
   border: 1px solid var(--border);
@@ -785,6 +818,12 @@ button, input, textarea, select {
   cursor: pointer;
   transition: var(--transition);
   font-size: 0.9rem;
+}
+
+.filter-btn i,
+.filter-btn svg {
+  width: 15px;
+  height: 15px;
 }
 
 .filter-btn:hover,

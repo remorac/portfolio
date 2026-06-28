@@ -1,0 +1,330 @@
+/* =====================================================
+   pdf.css — styles for the dedicated print document
+   (print.html). This page IS the PDF, so styles apply
+   directly; no @media print needed.
+   ===================================================== */
+
+:root {
+  --primary: #1e3a5f;
+  --accent: #00a88a;
+  --accent-dark: #008a72;
+  --text: #1a1a2e;
+  --text-light: #4a4a5a;
+  --text-muted: #7a7a8a;
+  --border: #e2e8f0;
+  --font-sans: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Single source of truth for page geometry: CSS @page wins over the
+   Puppeteer margin option, so size + margins are declared only here. */
+@page {
+  size: A4;
+  margin: 14mm 20mm; /* tighter top/bottom, wider left/right */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: #fff;
+  font-size: 11.5px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- Header band ---------- */
+.doc-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.doc-name {
+  font-size: 28.5px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  line-height: 1.05;
+}
+
+.doc-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  margin-top: 2px;
+}
+
+.doc-contact {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-light);
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.doc-contact strong {
+  color: var(--text);
+}
+
+/* ---------- Summary + stats strip ---------- */
+.doc-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.doc-summary p {
+  font-size: 11.5px;
+  color: var(--text-light);
+  max-width: 64%;
+}
+
+.doc-stats {
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.doc-stat {
+  text-align: center;
+}
+
+.doc-stat b {
+  display: block;
+  font-size: 17.5px;
+  font-weight: 800;
+  color: var(--accent-dark);
+  line-height: 1;
+}
+
+.doc-stat span {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+/* ---------- Section headings ---------- */
+.pdf-section {
+  margin-top: 22px;
+}
+
+.pdf-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  break-after: avoid;
+}
+
+.pdf-section-head h2 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+}
+
+.pdf-section-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- Skills ---------- */
+.doc-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  break-inside: avoid;
+}
+
+.skill-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.skill-label {
+  flex: 0 0 84px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip {
+  display: inline-block;
+  padding: 1.5px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  background: rgba(0, 168, 138, 0.08);
+  border: 1px solid rgba(0, 168, 138, 0.28);
+  border-radius: 999px;
+  line-height: 1.4;
+}
+
+/* ---------- Experience ---------- */
+.exp-item {
+  margin-top: 11px;
+  break-inside: avoid;
+}
+
+.exp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.exp-row h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.exp-period {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  white-space: nowrap;
+}
+
+.exp-role {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.exp-desc {
+  font-size: 10.5px;
+  color: var(--text-light);
+  margin-top: 1px;
+}
+
+/* ---------- Projects grid ---------- */
+#pdf-projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pdf-project {
+  min-width: 0;
+  break-inside: avoid;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+
+.pdf-project-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.pdf-project h3 {
+  min-width: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.pdf-project-date {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  white-space: nowrap;
+}
+
+.pdf-project p {
+  font-size: 10px;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+.pdf-project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 8px;
+  margin-top: 4px;
+  font-size: 9.5px;
+  color: var(--text-muted);
+  min-width: 0;
+}
+
+.pdf-project-tech {
+  color: var(--accent-dark);
+  font-weight: 600;
+}
+
+/* ---------- Education ---------- */
+.edu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 11px;
+  margin-bottom: 4px;
+  break-inside: avoid;
+}
+
+.edu-item b {
+  color: var(--primary);
+}
+
+.edu-item span {
+  color: var(--text-muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* ---------- Footer ---------- */
+.doc-footer {
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.doc-footer a {
+  color: var(--accent-dark);
+}

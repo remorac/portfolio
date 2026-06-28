@@ -487,14 +487,14 @@
           small business — from 2012 to today.</p>
       </div>
       <div class="filters fade-in">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="healthcare">Healthcare</button>
-        <button class="filter-btn" data-filter="education">Education</button>
-        <button class="filter-btn" data-filter="government">Government</button>
-        <button class="filter-btn" data-filter="inventory">Inventory</button>
-        <button class="filter-btn" data-filter="corporate">Corporate</button>
-        <button class="filter-btn" data-filter="mobile">Mobile</button>
-        <button class="filter-btn" data-filter="others">Others</button>
+        <button class="filter-btn active" data-filter="all"><i data-lucide="layout-grid"></i>All</button>
+        <button class="filter-btn" data-filter="healthcare"><i data-lucide="heart-pulse"></i>Healthcare</button>
+        <button class="filter-btn" data-filter="education"><i data-lucide="graduation-cap"></i>Education</button>
+        <button class="filter-btn" data-filter="government"><i data-lucide="landmark"></i>Government</button>
+        <button class="filter-btn" data-filter="inventory"><i data-lucide="package"></i>Inventory</button>
+        <button class="filter-btn" data-filter="corporate"><i data-lucide="building-2"></i>Corporate</button>
+        <button class="filter-btn" data-filter="mobile"><i data-lucide="smartphone"></i>Mobile</button>
+        <button class="filter-btn" data-filter="others"><i data-lucide="layers"></i>Others</button>
       </div>
       <div class="projects-grid" id="projects-grid">
         <!-- Projects injected by JS -->
@@ -642,7 +642,7 @@
     <div class="modal">
       <button class="modal-close" id="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
       <div class="modal-icon" id="modal-icon"></div>
-      <div class="project-tags"><span class="tag" id="modal-tag"></span></div>
+      <div class="project-tags" id="modal-tags"></div>
       <h2 id="modal-title"></h2>
       <p id="modal-desc" style="color: var(--text-light, #64748b); line-height: 1.7;"></p>
       <div class="modal-meta">
@@ -679,8 +679,28 @@
       const grid = document.getElementById('projects-grid');
       const filterBtns = document.querySelectorAll('.filter-btn');
 
+      // Builds the icon+label tag chips for a project. The first category is the
+      // primary (expanded by default); the rest collapse to icon-only until hovered.
+      function renderProjectTags(project) {
+        return project.categories.map((slug, i) => `
+          <span class="tag${i === 0 ? ' primary expanded' : ''}">
+            <i data-lucide="${CATEGORY_ICONS[slug] || 'tag'}"></i>
+            <span class="tag-label">${project.categoryLabels[i]}</span>
+          </span>`).join('');
+      }
+
+      // Hovering a tag expands it and keeps it expanded (collapsing its siblings)
+      // until another tag in the same group is hovered. Delegated so it survives
+      // grid re-renders and works inside the modal.
+      document.addEventListener('mouseover', (e) => {
+        const tag = e.target.closest('.project-tags .tag');
+        if (!tag) return;
+        tag.parentElement.querySelectorAll('.tag')
+          .forEach(t => t.classList.toggle('expanded', t === tag));
+      });
+
       function renderProjects(filter) {
-        const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+        const filtered = filter === 'all' ? projects : projects.filter(p => p.categories.includes(filter));
         grid.innerHTML = '';
         filtered.forEach((project, index) => {
           const card = document.createElement('div');
@@ -690,7 +710,7 @@
             <div class="project-content">
               <div class="card-icon"><i data-lucide="${project.image}"></i></div>
               <div class="project-tags">
-                <span class="tag">${project.categoryLabel}</span>
+                ${renderProjectTags(project)}
               </div>
               <h3>${project.title}</h3>
               <p>${project.shortDesc}</p>
@@ -726,7 +746,7 @@
         if (!project) return;
 
         document.getElementById('modal-icon').innerHTML = `<i data-lucide="${project.image}"></i>`;
-        document.getElementById('modal-tag').textContent = project.categoryLabel;
+        document.getElementById('modal-tags').innerHTML = renderProjectTags(project);
         document.getElementById('modal-title').textContent = project.title;
         document.getElementById('modal-desc').textContent = project.description || project.shortDesc;
         document.getElementById('modal-client').textContent = project.client || '—';

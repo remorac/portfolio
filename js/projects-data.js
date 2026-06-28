@@ -1,9 +1,23 @@
+// Maps each category filter slug to its Lucide icon (shown on project tags).
+const CATEGORY_ICONS = {
+  healthcare: "heart-pulse",
+  education:  "graduation-cap",
+  government: "landmark",
+  inventory:  "package",
+  corporate:  "building-2",
+  mobile:     "smartphone",
+  others:     "layers",
+};
+
+// Each project may belong to multiple categories. `categories` holds the filter
+// slugs and `categoryLabels` the matching display labels, paired by index — the
+// first element is the primary category (expanded by default in the UI).
 const projects = [
   {
     id: "1",
     title: "Appskep UKOM",
-    category: "education",
-    categoryLabel: "Education",
+    categories: ["education", "healthcare"],
+    categoryLabels: ["Education", "Healthcare"],
     shortDesc: "National competency exam platform for healthcare professionals in Indonesia.",
     description: "Flagship platform of Appskep Indonesia — helps nursing and healthcare students prepare for and take the national competency exam (Uji Kompetensi). Serves thousands of users across Indonesia with question banks, simulation tests, and analytics.",
     client: "Appskep Indonesia",
@@ -17,8 +31,8 @@ const projects = [
   {
     id: "2",
     title: "Appskep CPNS",
-    category: "government",
-    categoryLabel: "Government",
+    categories: ["education", "government"],
+    categoryLabels: ["Education", "Government"],
     shortDesc: "CPNS (civil servant) test preparation platform with CAT-style simulations.",
     description: "Online platform for candidates preparing for the Indonesian civil servant (CPNS) selection test. Provides CAT-style simulations, question banks, and detailed performance reports.",
     client: "Appskep Indonesia",
@@ -32,8 +46,8 @@ const projects = [
   {
     id: "3",
     title: "Appskep Homecare",
-    category: "healthcare",
-    categoryLabel: "Healthcare",
+    categories: ["healthcare"],
+    categoryLabels: ["Healthcare"],
     shortDesc: "Booking platform connecting patients with home-based healthcare providers.",
     description: "Connects patients with qualified home-based healthcare providers. Handles bookings, scheduling, payments, and service tracking.",
     client: "Appskep Indonesia",
@@ -47,13 +61,13 @@ const projects = [
   {
     id: "4",
     title: "PT Panay Farmalab Inventory",
-    category: "inventory",
-    categoryLabel: "Inventory",
+    categories: ["inventory", "corporate"],
+    categoryLabels: ["Inventory", "Corporate"],
     shortDesc: "Inventory management system for a pharmaceutical company.",
     description: "End-to-end inventory management for a pharmaceutical company — raw materials, finished goods, warehouse movements, and operational reporting.",
     client: "PT Panay Farmalab",
     location: "Padang",
-    date: "2023",
+    date: "2023 – Now",
     role: "System Analyst",
     tech: ["PHP (Yii2)", "MySQL"],
     image: "pill"
@@ -61,8 +75,8 @@ const projects = [
   {
     id: "5",
     title: "Sertifikasi Wartawan Dewan Pers",
-    category: "government",
-    categoryLabel: "Government",
+    categories: ["government", "education"],
+    categoryLabels: ["Government", "Education"],
     shortDesc: "Journalist certification system for Indonesia's Press Council.",
     description: "Official system for Dewan Pers Indonesia to manage the journalist certification process — applicant registration, document review, examination workflow, and certificate issuance.",
     client: "Dewan Pers Indonesia",
@@ -75,8 +89,8 @@ const projects = [
   {
     id: "6",
     title: "Pendataan Media Dewan Pers",
-    category: "government",
-    categoryLabel: "Government",
+    categories: ["government"],
+    categoryLabels: ["Government"],
     shortDesc: "Media registry and data collection system for Indonesia's Press Council.",
     description: "Media-data registry for Dewan Pers Indonesia — tracks media organizations, journalist counts, and compliance information for the national press council.",
     client: "Dewan Pers Indonesia",
@@ -89,8 +103,8 @@ const projects = [
   {
     id: "7",
     title: "LAMEMBA Accreditation",
-    category: "education",
-    categoryLabel: "Education",
+    categories: ["education", "government"],
+    categoryLabels: ["Education", "Government"],
     shortDesc: "Higher-education accreditation system for business and management programs.",
     description: "Accreditation information system for LAMEMBA, the independent accreditation agency for business and management higher-education programs in Indonesia.",
     client: "LAMEMBA",
@@ -103,8 +117,8 @@ const projects = [
   {
     id: "8",
     title: "Notarius.id",
-    category: "others",
-    categoryLabel: "Legal Tech",
+    categories: ["others", "corporate"],
+    categoryLabels: ["Legal Tech", "Corporate"],
     shortDesc: "Information system for Indonesian notaries to manage their professional practice.",
     description: "Digitalizes traditionally paper-based notarial workflows — deed registration, document management, client records, and reporting to authorities.",
     client: "Notarius.id",
@@ -117,8 +131,8 @@ const projects = [
   {
     id: "9",
     title: "PT Nusantara Beta Farma Production",
-    category: "others",
-    categoryLabel: "Manufacturing",
+    categories: ["others", "inventory"],
+    categoryLabels: ["Manufacturing", "Inventory"],
     shortDesc: "Production information system for a pharmaceutical manufacturer.",
     description: "Production management system for PT Nusantara Beta Farma — tracks production batches, materials usage, and reporting tailored to pharmaceutical manufacturing.",
     client: "PT Nusantara Beta Farma",
@@ -131,8 +145,8 @@ const projects = [
   {
     id: "10",
     title: "PPID Politeknik Negeri Padang",
-    category: "mobile",
-    categoryLabel: "Mobile App",
+    categories: ["mobile", "education"],
+    categoryLabels: ["Mobile App", "Education"],
     shortDesc: "Android app for public information disclosure (PPID).",
     description: "Android app for the Pejabat Pengelola Informasi dan Dokumentasi (PPID) unit of Politeknik Negeri Padang — mobile access to public information services.",
     client: "Politeknik Negeri Padang",
@@ -145,8 +159,8 @@ const projects = [
   {
     id: "11",
     title: "SembakoPlus E-Commerce",
-    category: "others",
-    categoryLabel: "E-Commerce",
+    categories: ["others", "mobile"],
+    categoryLabels: ["E-Commerce", "Mobile App"],
     shortDesc: "E-commerce platform for daily grocery essentials in Pekanbaru.",
     description: "E-commerce platform and mobile application for ordering daily grocery essentials (sembako) in Pekanbaru.",
     client: "SembakoPlus",
@@ -159,8 +173,8 @@ const projects = [
   {
     id: "12",
     title: "BNN Sumbar Inventaris",
-    category: "government",
-    categoryLabel: "Government",
+    categories: ["government", "inventory"],
+    categoryLabels: ["Government", "Inventory"],
     shortDesc: "Inventory maintenance system for BNN West Sumatra province.",
     description: "Information system for the maintenance and upkeep of inventory at BNN (National Narcotics Agency) — West Sumatra Province.",
     client: "BNN Provinsi Sumbar",
@@ -173,8 +187,8 @@ const projects = [
   {
     id: "13",
     title: "PT Tre Jaya Perkasa Inventory",
-    category: "inventory",
-    categoryLabel: "Inventory",
+    categories: ["inventory", "corporate"],
+    categoryLabels: ["Inventory", "Corporate"],
     shortDesc: "Inventory management system for a Solok-based company.",
     description: "Inventory management system for PT Tre Jaya Perkasa — stock tracking, movement logging, and reporting.",
     client: "PT Tre Jaya Perkasa",
@@ -187,8 +201,8 @@ const projects = [
   {
     id: "14",
     title: "Pengadaan Indarung VI Semen Padang",
-    category: "corporate",
-    categoryLabel: "Corporate",
+    categories: ["corporate", "inventory"],
+    categoryLabels: ["Corporate", "Inventory"],
     shortDesc: "Procurement system for PT Semen Padang's Indarung VI project.",
     description: "Procurement management system for the Indarung VI construction project at PT Semen Padang — vendor management, procurement workflows, contract administration, and reporting.",
     client: "PT Semen Padang",
@@ -201,13 +215,13 @@ const projects = [
   {
     id: "15",
     title: "Trikurnia Group Inventory Systems",
-    category: "inventory",
-    categoryLabel: "Inventory",
+    categories: ["inventory", "corporate"],
+    categoryLabels: ["Inventory", "Corporate"],
     shortDesc: "Inventory and sales systems delivered to six automotive and trading companies across West Sumatra.",
     description: "A series of inventory management systems built for automotive spare parts dealers and trading companies — covering stock tracking, sales transactions, supplier management, and operational reporting. Delivered to CV Aksa Motor, CV Kencana Makmur Motorindo, PT Tri Kurnia Perkasa, CV Mandiri Dian Sejahtera, CV Kencana Makmur Jaya, and PT Tunas Banindo Jaya.",
     client: "CV Aksa Motor, CV Kencana Makmur Motorindo, PT Tri Kurnia Perkasa, CV Mandiri Dian Sejahtera, CV Kencana Makmur Jaya, PT Tunas Banindo Jaya",
     location: "Padang, Bukittinggi & Pesisir Selatan",
-    date: "2020 – 2025",
+    date: "2020 – Now",
     role: "Full Stack Programmer",
     tech: ["PHP (Yii2)", "MySQL"],
     image: "package"
@@ -215,13 +229,13 @@ const projects = [
   {
     id: "21",
     title: "Semen Padang CSR",
-    category: "corporate",
-    categoryLabel: "Corporate",
+    categories: ["corporate"],
+    categoryLabels: ["Corporate"],
     shortDesc: "CSR unit information system for PT Semen Padang.",
     description: "Information system for the Corporate Social Responsibility (CSR) unit at PT Semen Padang — program tracking, beneficiary management, and reporting.",
     client: "PT Semen Padang",
     location: "Padang",
-    date: "2019",
+    date: "2019 – Now",
     role: "Full Stack Programmer",
     tech: ["PHP (Yii2)", "MySQL"],
     image: "handshake"
@@ -229,8 +243,8 @@ const projects = [
   {
     id: "22",
     title: "Real Count Pemilu Sumbar",
-    category: "government",
-    categoryLabel: "Government",
+    categories: ["government"],
+    categoryLabels: ["Government"],
     shortDesc: "Election real-count system for a political party in West Sumatra.",
     description: "Information system for real-count of West Sumatra election results — built for one of the participating political parties in the general election.",
     client: "Confidential (political party)",
@@ -243,13 +257,13 @@ const projects = [
   {
     id: "23",
     title: "CV Indah Motor Inventory",
-    category: "inventory",
-    categoryLabel: "Inventory",
+    categories: ["inventory"],
+    categoryLabels: ["Inventory", "Corporate"],
     shortDesc: "Inventory management system for CV Indah Motor.",
     description: "Inventory management system for CV Indah Motor — stock tracking, sales, and operational reporting.",
     client: "CV Indah Motor",
     location: "Padang",
-    date: "2019",
+    date: "2019 – Now",
     role: "Full Stack Programmer",
     tech: ["PHP (Yii2)", "MySQL"],
     image: "wrench"
@@ -257,8 +271,8 @@ const projects = [
   {
     id: "24",
     title: "Inspeksi Kedatangan Barang Semen Padang",
-    category: "corporate",
-    categoryLabel: "Corporate",
+    categories: ["corporate", "inventory"],
+    categoryLabels: ["Corporate", "Inventory"],
     shortDesc: "Goods-arrival inspection system for PT Semen Padang's procurement bureau.",
     description: "Information system for incoming-goods inspection at the Procurement Planning Bureau of PT Semen Padang — inspection workflow, results recording, and reporting.",
     client: "PT Semen Padang",
@@ -271,8 +285,8 @@ const projects = [
   {
     id: "25",
     title: "PT Glorienta Panca Henna Inventory",
-    category: "inventory",
-    categoryLabel: "Inventory",
+    categories: ["inventory", "corporate"],
+    categoryLabels: ["Inventory", "Corporate"],
     shortDesc: "Inventory management system for PT Glorienta Panca Henna.",
     description: "Early inventory management system for PT Glorienta Panca Henna — stock tracking and operational reporting.",
     client: "PT Glorienta Panca Henna",
@@ -285,8 +299,8 @@ const projects = [
   {
     id: "26",
     title: "CareerJobExpo",
-    category: "mobile",
-    categoryLabel: "Career & Mobile",
+    categories: ["others", "mobile"],
+    categoryLabels: ["Career", "Mobile App"],
     shortDesc: "Career and job-fair platform with companion mobile app.",
     description: "Integrated platform — web information system plus React Native mobile app — for managing job-fair events, employer listings, and applicant interactions.",
     client: "PT Media Indotama",
@@ -299,8 +313,8 @@ const projects = [
   {
     id: "27",
     title: "Survey Stunting FKM Universitas Andalas",
-    category: "healthcare",
-    categoryLabel: "Healthcare",
+    categories: ["healthcare", "education"],
+    categoryLabels: ["Healthcare", "Education"],
     shortDesc: "Stunting survey system for the Faculty of Public Health, Universitas Andalas.",
     description: "Information system for stunting survey data collection at the Faculty of Public Health (FKM), Universitas Andalas — supporting public-health research on child stunting.",
     client: "FKM Universitas Andalas",
@@ -313,8 +327,8 @@ const projects = [
   {
     id: "28",
     title: "Blitz Gym Membership",
-    category: "others",
-    categoryLabel: "Membership",
+    categories: ["others", "corporate"],
+    categoryLabels: ["Membership", "Corporate"],
     shortDesc: "Membership management system for a gym in Pekanbaru.",
     description: "Membership management system for Blitz Gym — member records, attendance, and subscription tracking.",
     client: "Blitz Gym",
@@ -327,8 +341,8 @@ const projects = [
   {
     id: "29",
     title: "Star Fitness Membership",
-    category: "others",
-    categoryLabel: "Membership",
+    categories: ["others", "corporate"],
+    categoryLabels: ["Membership", "Corporate"],
     shortDesc: "Desktop membership system for a fitness center in Payakumbuh.",
     description: "Desktop membership management system for Star Fitness — built with VB.NET and MySQL. The first commercial software delivered (2012).",
     client: "Star Fitness",
@@ -350,5 +364,5 @@ function getAllProjects() {
 
 function getProjectsByCategory(category) {
   if (category === 'all') return projects;
-  return projects.filter(p => p.category === category);
+  return projects.filter(p => p.categories.includes(category));
 }
