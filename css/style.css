@@ -94,6 +94,10 @@ h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
    Buttons
    ===================================================== */
 
+button, input, textarea, select {
+  font-family: inherit;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
